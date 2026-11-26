@@ -15,8 +15,6 @@ import { Label } from "@/components/ui/label";
 import { bukaModeKelola } from "@/lib/riwayat";
 
 // Link "Login" di footer + modal PIN 4 angka.
-// Dipakai juga di /share-coding: label diganti dan mode kelola tidak dibuka
-// (setelah login, halaman yang sedang dibuka dimuat ulang dengan sesi pemilik).
 export function TombolLogin({ label = "Login", bukaKelola = true }) {
   const [terbuka, setTerbuka] = useState(false);
   const [pin, setPin] = useState("");
