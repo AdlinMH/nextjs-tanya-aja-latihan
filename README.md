@@ -27,12 +27,14 @@ npm run dev
 
 | Variabel | Isi | Contoh |
 |---|---|---|
-| `GROUP_ID` | Pembeda kelompok. Huruf kecil, angka, tanda hubung. | `kelompok-01` |
+| `OWNER_ID` | Identitas pemilik/kelompok. Huruf kecil, angka, tanda hubung. | `kelompok-01` |
 | `OWNER_PIN` | PIN pemilik, tepat 4 angka. | `4827` |
 | `SUPABASE_URL` | Project URL dari Supabase. | `https://abcd.supabase.co` |
 | `SUPABASE_SECRET_KEY` | Secret key (`sb_secret_...`) dari **Project Settings > API Keys**. Legacy `service_role` key juga bisa. | — |
 
 Semua variabel hanya dibaca server. Jangan memberi awalan `NEXT_PUBLIC_`.
+
+Untuk deployment lama, ganti nama variabel `GROUP_ID` menjadi `OWNER_ID` dengan nilai yang sama, lalu redeploy. Kolom database tetap `group_id`; tidak perlu migrasi database.
 
 ## Deploy ke Vercel
 
@@ -55,7 +57,7 @@ npm run test:supabase   # isolasi kelompok, butuh .env.local terisi
 
 - **Akses database hanya dari server.** Browser tidak pernah memegang key Supabase. Semua perubahan lewat Server Actions (`app/actions.js`).
 - **RLS aktif tanpa policy** dan hak `anon`/`authenticated` dicabut. Publishable/anon key tidak bisa membaca atau mengubah data.
-- **GROUP_ID dari environment server.** Setiap query di `lib/pertanyaan.js` memfilter `group_id`. Update dan hapus memeriksa `id` dan `group_id` sekaligus.
+- **OWNER_ID dari environment server.** Setiap query di `lib/pertanyaan.js` memfilter `group_id`. Update dan hapus memeriksa `id` dan `group_id` sekaligus.
 - **PIN dicek di server.** Setelah benar, server membuat sesi: cookie `HttpOnly`, `SameSite=Lax`, `Secure` di production, berlaku 8 jam. Cookie hanya berisi token acak. Database menyimpan hash token dan `group_id`. Logout menghapus sesi di database dan cookie.
 - **Setiap aksi pemilik memeriksa sesi lagi** di server. Data privat hanya diambil dan dikirim ke browser jika sesi valid.
 - **Batas percobaan disimpan di database** (tabel `rate_limits`), jadi tetap berlaku di Vercel:
@@ -68,12 +70,12 @@ npm run test:supabase   # isolasi kelompok, butuh .env.local terisi
 
 ## Batasan model latihan (penting untuk pemateri)
 
-- **Database bersama memakai satu secret key.** Secret key melewati RLS. Siapa pun yang memegang key itu bisa membaca dan mengubah data **semua kelompok**, termasuk pertanyaan privat. `GROUP_ID` hanya memisahkan data di dalam aplikasi, bukan pembatas bagi pemegang key.
+- **Database bersama memakai satu secret key.** Secret key melewati RLS. Siapa pun yang memegang key itu bisa membaca dan mengubah data **semua kelompok**, termasuk pertanyaan privat. `OWNER_ID` hanya memisahkan data di dalam aplikasi, bukan pembatas bagi pemegang key.
 - Karena itu, pada database bersama:
   - Pakai hanya data latihan yang tidak sensitif.
   - Sampaikan batasan ini kepada siswa sebelum membagikan key.
   - Setelah kelas selesai, buat key baru (rotate) atau hapus key bersama di **Project Settings > API Keys**.
-- **Isolasi sungguhan = project Supabase per kelompok.** Kelompok membuat project sendiri, menjalankan `supabase/setup.sql` yang sama, lalu mengganti `SUPABASE_URL` dan `SUPABASE_SECRET_KEY` di `.env.local`/Vercel. Tidak perlu mengubah kode. `GROUP_ID` boleh tetap.
+- **Isolasi sungguhan = project Supabase per kelompok.** Kelompok membuat project sendiri, menjalankan `supabase/setup.sql` yang sama, lalu mengganti `SUPABASE_URL` dan `SUPABASE_SECRET_KEY` di `.env.local`/Vercel. Tidak perlu mengubah kode. `OWNER_ID` boleh tetap.
 - Batas login per kelompok bisa dipakai orang lain untuk mengunci login pemilik sementara (15 menit). Siswa di jaringan sekolah yang sama juga berbagi IP. Ini dipilih supaya sederhana.
 - Belum ada fitur ganti PIN dari aplikasi. Ganti `OWNER_PIN` di environment, lalu jalankan ulang/redeploy.
 

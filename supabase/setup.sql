@@ -8,7 +8,7 @@
 -- - Role anon dan authenticated (publishable/anon key) TIDAK diberi akses
 --   ke tabel maupun fungsi. RLS aktif tanpa policy, jadi semua akses anon ditolak.
 -- - Pembatasan per kelompok (group_id) dilakukan di kode server,
---   memakai GROUP_ID dari environment. Pemegang secret key tetap bisa
+--   memakai OWNER_ID dari environment. Pemegang secret key tetap bisa
 --   mengakses semua kelompok. Lihat README.
 
 -- ---------------------------------------------------------------------------

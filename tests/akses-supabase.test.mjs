@@ -12,7 +12,7 @@ const B = `uji-b-${akhiran}`;
 
 let p;
 let klien;
-const pakaiKelompok = (g) => (process.env.GROUP_ID = g);
+const pakaiKelompok = (g) => (process.env.OWNER_ID = g);
 
 before(async () => {
   if (!siap) return;

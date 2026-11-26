@@ -13,7 +13,7 @@ const B = `uji-b-${akhiran}`;
 
 let s;
 let klien;
-const pakaiKelompok = (g) => (process.env.GROUP_ID = g);
+const pakaiKelompok = (g) => (process.env.OWNER_ID = g);
 const dok = (teks) => ({ type: "doc", content: [{ type: "codeBlock", content: [{ type: "text", text: teks }] }] });
 
 before(async () => {

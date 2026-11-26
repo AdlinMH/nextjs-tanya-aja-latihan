@@ -44,7 +44,7 @@ test("PIN: 4 angka, nol di depan tetap berlaku", () => {
   assert.ok(!pinCocok("0123", undefined));
 });
 
-test("format GROUP_ID dan ID pertanyaan", () => {
+test("format OWNER_ID dan ID pertanyaan", () => {
   assert.ok(formatGroupIdValid("kelompok-01"));
   assert.ok(!formatGroupIdValid("Kelompok 01"));
   assert.ok(!formatGroupIdValid(""));
