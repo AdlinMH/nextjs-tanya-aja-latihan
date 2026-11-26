@@ -7,12 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test tests/aturan.test.mjs",
-    "test:supabase": "node --conditions=react-server --env-file-if-exists=.env.local --test tests/akses-supabase.test.mjs"
+    "test": "node --test tests/aturan.test.mjs tests/dokumen.test.mjs",
+    "test:supabase": "node --conditions=react-server --env-file-if-exists=.env.local --test tests/akses-supabase.test.mjs tests/akses-share-coding.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
     "@supabase/supabase-js": "^2.119.0",
+    "@tiptap/pm": "^3.34.0",
+    "@tiptap/react": "^3.34.0",
+    "@tiptap/starter-kit": "^3.34.0",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.2",
     "lucide-react": "^1.74.0",
